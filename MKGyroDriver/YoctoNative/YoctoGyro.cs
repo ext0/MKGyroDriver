@@ -355,6 +355,8 @@ namespace MKGyroDriver.YoctoNative
         //--- (generated code: YGyro definitions)
         public new delegate void ValueCallback(YGyro func, string value);
         public new delegate void TimedReportCallback(YGyro func, YMeasure measure);
+        public delegate void QuatCallback(YGyro gyro, double w, double x, double y, double z);
+        public delegate void AnglesCallback(YGyro gyro, double pitch, double roll, double head);
 
         public const int BANDWIDTH_INVALID = YAPI.INVALID_INT;
         public const double XVALUE_INVALID = YAPI.INVALID_DOUBLE;
@@ -379,8 +381,8 @@ namespace MKGyroDriver.YoctoNative
         protected double _head = 0;
         protected double _pitch = 0;
         protected double _roll = 0;
-        protected Action<YGyro, double, double, double, double> _quatCallback;
-        protected Action<YGyro, double, double, double> _anglesCallback;
+        public QuatCallback _quatCallback;
+        public AnglesCallback _anglesCallback;
         //--- (end of generated code: YGyro definitions)
 
 
@@ -1002,7 +1004,7 @@ namespace MKGyroDriver.YoctoNative
          * @noreturn
          * </param>
          */
-        public virtual int registerQuaternionCallback(Action<YGyro, double, double, double, double> callback)
+        public virtual int registerQuaternionCallback(QuatCallback callback)
         {
             this._quatCallback = callback;
             if (callback != null)
@@ -1055,7 +1057,7 @@ namespace MKGyroDriver.YoctoNative
          * @noreturn
          * </param>
          */
-        public virtual int registerAnglesCallback(Action<YGyro, double, double, double> callback)
+        public virtual int registerAnglesCallback(AnglesCallback callback)
         {
             this._anglesCallback = callback;
             if (callback != null)

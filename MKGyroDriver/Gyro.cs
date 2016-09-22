@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MKGyroDriver
 {
@@ -34,6 +33,16 @@ namespace MKGyroDriver
             return true;
         }
 
+        public static bool UpdateEvents()
+        {
+            String errorMessage = null;
+            if (YAPI.HandleEvents(ref errorMessage) != YAPI.SUCCESS)
+            {
+                throw new Exception("Failed to handle events! " + errorMessage);
+            }
+            return true;
+        }
+
         public static bool RegisterGyroscope()
         {
             _gyro = YGyro.FirstGyro();
@@ -49,7 +58,7 @@ namespace MKGyroDriver
             return true;
         }
 
-        public static void RegisterQuaternionCallback(Action<YGyro, double, double, double, double> quaternionCallback)
+        public static void RegisterQuaternionCallback(YGyro.QuatCallback quaternionCallback)
         {
             if (_gyro != null)
             {
